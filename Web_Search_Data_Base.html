@@ -1,0 +1,66 @@
+<html>
+<head>
+        <title> GRE Word Search Tool </title>
+</head>
+<body>
+<h1>
+Hypertext Markup Language (HTML) GRE Application Word Search
+</h1>
+<br>
+<br>
+<br>
+<h2> GRE Vocabulary Definition Search Tool</h2>
+<p> In order to assist with studying for the GRE a web based tool has been created to provide definitions for words that you may find on the GRE. Please use the search box below to input the vocabulary word you would like to request the definition for, if available, the results will provide you with the definition for the word requested. </p>
+<br>
+<br>
+        <h1> Word Search </h1>
+        <form action="gresearch.php" method="get">
+                Word: <input type="text" name="word"> <br>
+                <br>
+                <input type="submit" value="submit"> <br>
+        </form>
+<br>
+<?php
+if (!empty($_GET["word"])) {
+//retrieve definition from word search from database
+        //connect to database
+        $con = mysqli_connect("fdb1029.awardspace.net", "4505102_grejs", "S@nt@Cl@r@2024", "4505102_grejs");
+        //get user input, word that is input into the form
+        $word = $_GET['word'];
+        //create sql query
+        $sql = "SELECT definition FROM Word_Definition_Table WHERE word = '$word'";
+        //submit query
+        $result = mysqli_query($con, $sql);
+        if ($result) {
+                
+    			if ($result->num_rows > 0) {
+                        
+        				$row = $result->fetch_assoc();
+        				$definition = $row['definition'];
+        				echo "<p>Definition: $definition</p>";
+    			} else {
+        				echo "<p>Definition: Unfound</p>";
+   				}
+				} else {
+    					echo "Error: " . $con->error;
+				}  
+
+}
+?>
+
+<br>
+<h4> Example Search (input) and Result (output)</h4>
+<p> In this example, the input is the search word and the results would be as follows. </p>
+<ul>
+        	<li> (input) Word: acarpous </li>
+<br>
+            <li> (output) Definition: effete; no longer fertile; worn out </li>
+</ul>
+
+Additional Resource Link for Searches, <a href = "https://www.wikipedia.org/"> Search Wikipedia </a>
+<br>
+        <br>
+        <img src = "luck.webp" width='300px'>
+</body>      
+        
+</html>
